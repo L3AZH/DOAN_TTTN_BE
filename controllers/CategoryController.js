@@ -47,9 +47,9 @@ exports.updateCategory = asyncMiddleware(async (req, res, next) => {
     { where: { idCategory: idCategory } }
   );
   console.log(resultUpdate);
-  return res
-    .status(200)
-    .json(
-      new SuccessResponse(200, { message: "Update category successfully" })
-    );
+  return res.status(200).json(
+    new SuccessResponse(200, {
+      message: "Update category successfully",
+    })
+  );
 });
