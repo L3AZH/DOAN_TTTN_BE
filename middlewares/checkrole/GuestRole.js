@@ -1,7 +1,7 @@
 const { ErrorResponse } = require("../../models/ErrorResponse");
 
 const guestRole = (req, res, next) => {
-  if (!req.user.role) {
+  if (req.user.role) {
     if (req.user.role === "admin") {
       next();
     } else {

@@ -14,7 +14,7 @@ exports.getAllCategory = asyncMiddleware(async (req, res, next) => {
   } else {
     return res
       .status(200)
-      .json(new SuccessResponse(200, { result: findResult.toJSON() }));
+      .json(new SuccessResponse(200, { result: findResult }));
   }
 });
 

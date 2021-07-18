@@ -40,7 +40,7 @@ module.exports = {
             replacements: { idCategory: value },
           }
         );
-        if (resultFind != null) {
+        if (!resultFind) {
           return Promise.reject(
             "This category already exist in table Product !!!"
           );
@@ -66,7 +66,7 @@ module.exports = {
       .withMessage("Please enter category's name !!")
       .custom(async (value) => {
         const resultFind = await Category.findOne({ where: { name: value } });
-        if (resultFind != null) {
+        if (!resultFind) {
           return Promise.reject(
             "Category with this name already exist in database !!"
           );
