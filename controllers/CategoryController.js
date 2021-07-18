@@ -40,7 +40,7 @@ exports.deleteCategory = asyncMiddleware(async (req, res, next) => {
 });
 
 exports.updateCategory = asyncMiddleware(async (req, res, next) => {
-  const newName = req.body;
+  const newName = req.body.name;
   const idCategory = req.params.idCategory;
   const resultUpdate = await Category.update(
     { name: newName },

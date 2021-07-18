@@ -66,7 +66,7 @@ module.exports = {
       .withMessage("Please enter category's name !!")
       .custom(async (value) => {
         const resultFind = await Category.findOne({ where: { name: value } });
-        if (!resultFind) {
+        if (resultFind != null) {
           return Promise.reject(
             "Category with this name already exist in database !!"
           );
