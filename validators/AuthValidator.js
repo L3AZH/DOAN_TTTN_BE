@@ -48,6 +48,22 @@ module.exports = {
       .notEmpty()
       .withMessage("Please enter your password"),
   ],
+  refreshTokenValidation: [
+    body("refreshToken")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter your token !!")
+      .custom(async (value) => {
+        const findResult = await Account.findOne({
+          where: { refreshToken: value },
+        });
+        if (findResult == null) {
+          return Promise.reject(
+            new ErrorResponse(401, { message: "Invalid token !!" })
+          );
+        }
+      }),
+  ],
   result: (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -4,6 +4,7 @@ const _ = require("lodash");
 const Account = require("../database/models/Account");
 const { SuccessResponse } = require("../models/SuccessResponse");
 const { ErrorResponse } = require("../models/ErrorResponse");
+const jwt = require("jsonwebtoken");
 
 async function hashPassword(password) {
   const salt = await bcrypt.genSalt(parseInt(process.env.DB_NUMBERSALT));
@@ -65,4 +66,26 @@ exports.login = asyncMiddleware(async (req, res, next) => {
       })
     );
   }
+});
+
+exports.refreshToken = asyncMiddleware(async (req, res, next) => {
+  const refreshToken = req.body.refreshToken;
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err, data) => {
+      console.log(err);
+      if (err)
+        return res
+          .status(403)
+          .json(
+            new ErrorResponse(403, { message: "Unthorization", error: err })
+          );
+      else {
+        const account = await Account.findByPk(data.id);
+        const token = account.generateToken();
+        return res.status(200).json(new SuccessResponse(200, { token: token }));
+      }
+    }
+  );
 });

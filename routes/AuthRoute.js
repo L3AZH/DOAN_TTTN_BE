@@ -18,4 +18,12 @@ router.post(
   AuthController.login
 );
 
+router.post(
+  "/refresh-token",
+  basicAuth,
+  AuthValidator.refreshTokenValidation,
+  AuthValidator.result,
+  AuthController.refreshToken
+);
+
 module.exports = router;
