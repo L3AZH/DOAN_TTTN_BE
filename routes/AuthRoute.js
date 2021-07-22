@@ -2,6 +2,8 @@ const AuthValidator = require("../validators/AuthValidator");
 const AuthController = require("../controllers/AuthController");
 const router = require("express").Router();
 const basicAuth = require("../middlewares/BasicAuth");
+const jwtAuth = require("../middlewares/JwtAuth");
+
 router.post(
   "/register",
   basicAuth,
@@ -25,5 +27,7 @@ router.post(
   AuthValidator.result,
   AuthController.refreshToken
 );
+
+router.get("/check-token-expire", jwtAuth, AuthController.checkTokenExpire);
 
 module.exports = router;

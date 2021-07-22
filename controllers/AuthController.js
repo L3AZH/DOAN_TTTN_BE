@@ -48,6 +48,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
       return res.status(200).json(
         new SuccessResponse(200, {
           message: `Login successfully with email: ${checkExistEmail.email}`,
+          role: checkExistEmail.role,
           token: token,
           refreshToken: refreshToken,
         })
@@ -88,4 +89,8 @@ exports.refreshToken = asyncMiddleware(async (req, res, next) => {
       }
     }
   );
+});
+
+exports.checkTokenExpire = asyncMiddleware(async (req, res, next) => {
+  return res.status(200).json();
 });
