@@ -63,7 +63,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
   } else {
     return res.status(404).json(
       new ErrorResponse(404, {
-        email: "Not found this email, check again !!",
+        message: "Not found this email, check again !!",
       })
     );
   }
