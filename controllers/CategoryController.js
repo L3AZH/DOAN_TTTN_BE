@@ -21,10 +21,12 @@ exports.getAllCategory = asyncMiddleware(async (req, res, next) => {
 exports.createNewCategory = asyncMiddleware(async (req, res, next) => {
   const data = req.body;
   const createResult = await Category.create({ name: data.name });
-  return res.status(200).json(200, {
-    message: "Create category successfully !!",
-    newObject: createResult.toJSON(),
-  });
+  return res.status(200).json(
+    new SuccessResponse(200, {
+      message: "Create category successfully !!",
+      newObject: createResult.toJSON(),
+    })
+  );
 });
 
 exports.deleteCategory = asyncMiddleware(async (req, res, next) => {

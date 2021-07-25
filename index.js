@@ -6,6 +6,7 @@ const port = process.env.port || 3000;
 const sequelize = require("./database/Db_connection");
 const AuthRoute = require("./routes/AuthRoute");
 const CategoryRoute = require("./routes/CategoryRoute");
+const ProductRoute = require("./routes/ProductRoute");
 app.use(express.json());
 sequelize.sync();
 // async function testConnection() {
@@ -18,6 +19,7 @@ sequelize.sync();
 // }
 app.use("/api/auth", AuthRoute);
 app.use("/api/category", CategoryRoute);
+app.use("/api/product/", ProductRoute);
 app.use(errorHandler);
 // testConnection();
 app.listen(port, () => console.log(`Server is running on port ${port}`));

@@ -92,5 +92,5 @@ exports.refreshToken = asyncMiddleware(async (req, res, next) => {
 });
 
 exports.checkTokenExpire = asyncMiddleware(async (req, res, next) => {
-  return res.status(200).json();
+  return res.status(200).json(new SuccessResponse(200, {}));
 });

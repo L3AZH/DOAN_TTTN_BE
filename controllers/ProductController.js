@@ -71,8 +71,6 @@ exports.updateProduct = asyncMiddleware(async (req, res, next) => {
   const updateResult = await Product.update(
     {
       name: data.name,
-      price: data.price,
-      image: data.image,
       CategoryIdCategory: data.idCategory,
     },
     { where: { idProduct: idProduct } }

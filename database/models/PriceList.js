@@ -1,18 +1,18 @@
 const sequelize = require("../Db_connection");
 const { DataTypes, Model, UUID } = require("sequelize");
-const Bill = require("./Bill");
+const Shop = require("./Shop");
 const Product = require("./Product");
 
-class BillDetail extends Model {}
+class PriceList extends Model {}
 
-BillDetail.init(
+PriceList.init(
   {
-    BillIdBill: {
-      field: "Bill_idBill",
+    ShopIdShop: {
+      field: "Shop_idShop",
       type: DataTypes.UUID,
       references: {
-        model: Bill,
-        key: "idBill",
+        model: Shop,
+        key: "idShop",
       },
     },
     ProductIdProduct: {
@@ -26,16 +26,19 @@ BillDetail.init(
     price: {
       type: DataTypes.DOUBLE,
     },
+    image: {
+      type: DataTypes.BLOB,
+    },
   },
   {
     sequelize,
     timestamps: false,
-    tableName: "BillDetail",
-    modelName: "BillDetail",
+    tableName: "PriceList",
+    modelName: "PriceList",
   }
 );
 
-Bill.belongsToMany(Product, { through: "BillDetail" });
-Product.belongsToMany(Bill, { through: "BillDetail" });
+Product.belongsToMany(Shop, { through: "PriceList" });
+Shop.belongsToMany(Product, { through: "PriceList" });
 
-module.exports = BillDetail;
+module.exports = PriceList;

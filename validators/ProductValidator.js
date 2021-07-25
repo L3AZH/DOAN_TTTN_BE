@@ -2,8 +2,8 @@ const { body, validationResult, param } = require("express-validator");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const Product = require("../database/models/Product");
 const Category = require("../database/models/Category");
-const sequelize = require("../database/Db_connection");
-const { QueryTypes } = require("sequelize");
+const BillDetail = require("../database/models/BillDetail");
+const PriceList = require("../database/models/PriceList");
 
 module.exports = {
   getProductByCategoryIdValidation: [
@@ -35,17 +35,6 @@ module.exports = {
           );
         }
       }),
-    body("price")
-      .trim()
-      .notEmpty()
-      .withMessage("Please enter price product !!")
-      .isNumeric()
-      .withMessage("Invalid price !!"),
-    body("image")
-      .notEmpty()
-      .withMessage("Please insert image of product !!")
-      .isArray()
-      .withMessage("Invalid image data !!"),
     body("idCategory")
       .trim()
       .notEmpty()
@@ -59,8 +48,88 @@ module.exports = {
         }
       }),
   ],
-  deleteProductValidation: [],
-  updateProductValidation: [],
+  deleteProductValidation: [
+    param("idProduct")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter idProduct to delete Product !!")
+      .custom(async (value) => {
+        const findResult = await Product.findByPk(value);
+        if (findResult == null) {
+          return Promise.reject(
+            `Product with this id: ${value} was not exist !!`
+          );
+        }
+      })
+      .custom(async (value) => {
+        const findResult = await BillDetail.findOne({
+          where: { ProductIdProduct: value },
+        });
+        if (findResult != null) {
+          return Promise.reject(
+            `Product already exist in Bill Detail, can not delete !!`
+          );
+        }
+      })
+      .custom(async (value) => {
+        const findResult = await PriceList.findOne({
+          where: { ProductIdProduct: value },
+        });
+        if (findResult != null) {
+          return Promise.reject(
+            `Product already exist in PriceList, can not delete !!`
+          );
+        }
+      }),
+  ],
+  updateProductValidation: [
+    param("idProduct")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter idProduct to delete Product !!")
+      .custom(async (value) => {
+        const findResult = await Product.findByPk(value);
+        if (findResult == null) {
+          return Promise.reject(
+            `Product with this id: ${value} was not exist !!`
+          );
+        }
+      })
+      .custom(async (value) => {
+        const findResult = await BillDetail.findOne({
+          where: { ProductIdProduct: value },
+        });
+        if (findResult != null) {
+          return Promise.reject(
+            `Product already exist in Bill Detail, can not update !!`
+          );
+        }
+      }),
+    body("name")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter name product !!")
+      .custom(async (value) => {
+        const findResult = await Product.findOne({ where: { name: value } });
+        if (findResult != null) {
+          return Promise.reject(
+            `Product with name: ${value} exist in database !!`
+          );
+        }
+      }),
+    body("idCategory")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter idCategory !!")
+      .custom(async (value) => {
+        const findResult = await Category.findByPk(value);
+        if (findResult == null) {
+          return Promise.reject(
+            `Category with this id: ${value} was not exist !!`
+          );
+        }
+      }),
+  ],
   result: (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
