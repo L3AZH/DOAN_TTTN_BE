@@ -5,6 +5,7 @@ const Account = require("../database/models/Account");
 const { SuccessResponse } = require("../models/SuccessResponse");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const jwt = require("jsonwebtoken");
+const RefreshToken = require("../database/models/RefreshToken");
 
 async function hashPassword(password) {
   const salt = await bcrypt.genSalt(parseInt(process.env.DB_NUMBERSALT));
@@ -41,10 +42,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
     if (checkPassword) {
       const token = checkExistEmail.generateToken();
       const refreshToken = checkExistEmail.generateRefreshToken();
-      Account.update(
-        { refreshToken: refreshToken },
-        { where: { idAccount: checkExistEmail.idAccount } }
-      );
+      RefreshToken.create({ refreshToken: refreshToken });
       return res.status(200).json(
         new SuccessResponse(200, {
           message: `Login successfully with email: ${checkExistEmail.email}`,

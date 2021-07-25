@@ -55,8 +55,8 @@ exports.createNewProduct = asyncMiddleware(async (req, res, next) => {
   );
 });
 
-exports.deleteProduct = asyncMiddleware(async (rqe, res, next) => {
-  const idProduct = req.params.idCategory;
+exports.deleteProduct = asyncMiddleware(async (req, res, next) => {
+  const idProduct = req.params.idProduct;
   Product.destroy({ where: { idProduct: idProduct } });
   return res
     .status(200)
@@ -66,7 +66,7 @@ exports.deleteProduct = asyncMiddleware(async (rqe, res, next) => {
 });
 
 exports.updateProduct = asyncMiddleware(async (req, res, next) => {
-  const idProduct = req.params.idCategory;
+  const idProduct = req.params.idProduct;
   const data = req.body;
   const updateResult = await Product.update(
     {

@@ -15,12 +15,6 @@ Product.init(
     name: {
       type: DataTypes.STRING(50),
     },
-    price: {
-      type: DataTypes.DOUBLE,
-    },
-    image: {
-      type: DataTypes.BLOB,
-    },
     CategoryIdCategory: {
       field: "Category_idCategory",
       type: DataTypes.UUID,

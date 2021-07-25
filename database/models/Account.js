@@ -32,9 +32,6 @@ Account.init(
     role: {
       type: DataTypes.STRING(10),
     },
-    refreshToken: {
-      type: DataTypes.STRING(1000),
-    },
   },
   {
     sequelize,

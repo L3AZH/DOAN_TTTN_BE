@@ -42,3 +42,5 @@ router.put(
   ProductValidator.result,
   ProductController.updateProduct
 );
+
+module.exports = router;

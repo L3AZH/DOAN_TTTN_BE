@@ -1,6 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const Account = require("../database/models/Account");
+const RefreshToken = require("../database/models/RefreshToken");
 
 module.exports = {
   accountRegisterDataValidation: [
@@ -54,7 +55,7 @@ module.exports = {
       .notEmpty()
       .withMessage("Please enter your token !!")
       .custom(async (value) => {
-        const findResult = await Account.findOne({
+        const findResult = await RefreshToken.findOne({
           where: { refreshToken: value },
         });
         if (findResult == null) {
