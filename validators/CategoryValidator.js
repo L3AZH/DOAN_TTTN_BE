@@ -28,7 +28,9 @@ module.exports = {
         const checkExist = await Category.findByPk(value);
         if (checkExist == null) {
           return Promise.reject(
-            new ErrorResponse(404, `Can't find any category with id: ${value}`)
+            new ErrorResponse(404, {
+              message: `Can't find any category with id: ${value}`,
+            })
           );
         }
       })

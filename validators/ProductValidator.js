@@ -62,16 +62,6 @@ module.exports = {
         }
       })
       .custom(async (value) => {
-        const findResult = await BillDetail.findOne({
-          where: { ProductIdProduct: value },
-        });
-        if (findResult != null) {
-          return Promise.reject(
-            `Product already exist in Bill Detail, can not delete !!`
-          );
-        }
-      })
-      .custom(async (value) => {
         const findResult = await PriceList.findOne({
           where: { ProductIdProduct: value },
         });
@@ -92,16 +82,6 @@ module.exports = {
         if (findResult == null) {
           return Promise.reject(
             `Product with this id: ${value} was not exist !!`
-          );
-        }
-      })
-      .custom(async (value) => {
-        const findResult = await BillDetail.findOne({
-          where: { ProductIdProduct: value },
-        });
-        if (findResult != null) {
-          return Promise.reject(
-            `Product already exist in Bill Detail, can not update !!`
           );
         }
       }),
