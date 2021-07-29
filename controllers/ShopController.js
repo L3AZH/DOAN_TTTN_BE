@@ -47,7 +47,7 @@ exports.deleteShop = asyncMiddleware(async (req, res, next) => {
 
 exports.updateShop = asyncMiddleware(async (req, res, next) => {
   const idShop = req.params.idShop;
-  const data = res.body;
+  const data = req.body;
   const resultUpdate = await Shop.update(
     {
       name: data.name,

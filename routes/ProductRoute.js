@@ -2,7 +2,6 @@ const ProductController = require("../controllers/ProductController");
 const ProductValidator = require("../validators/ProductValidator");
 const AdminRole = require("../middlewares/checkrole/AdminRole");
 const jwtAuth = require("../middlewares/JwtAuth");
-const { route } = require("./AuthRoute");
 const router = require("express").Router();
 
 router.get("/get-all-product", jwtAuth, ProductController.getAllProduct);
