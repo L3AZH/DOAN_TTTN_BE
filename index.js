@@ -9,8 +9,10 @@ const CategoryRoute = require("./routes/CategoryRoute");
 const ProductRoute = require("./routes/ProductRoute");
 const ShopRoute = require("./routes/ShopRoute");
 const PriceListRoute = require("./routes/PriceListRoute");
-app.use(express.json());
 sequelize.sync();
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 // async function testConnection() {
 //   try {
 //     await sequelize.authenticate();

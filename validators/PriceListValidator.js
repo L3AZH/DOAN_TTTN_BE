@@ -52,24 +52,16 @@ module.exports = {
       .withMessage("Please enter price !!")
       .isNumeric()
       .withMessage("Invalid price !!")
-      .isLength({ min: 10000 })
-      .withMessage("Price minimum : 10000"),
+      .custom(async (value) => {
+        if (value < 10000) {
+          return Promise.reject("Price minimun: 10000");
+        }
+      }),
     body("image")
-      .trim()
       .notEmpty()
       .withMessage("Please upload image of product !!")
       .isArray()
-      .withMessage("Invalid image data")
-      .custom(async (value) => {
-        for (let i = 0; i < value.lenght; i++) {
-          if (!(i === 0)) {
-            return Promise.reject("Invalida image data");
-          }
-          if (!(i === 1)) {
-            return Promise.reject("Invalida image data");
-          }
-        }
-      }),
+      .withMessage("Invalid array !!"),
   ],
   deletePriceListObjectValidation: [
     param("idShop")
@@ -132,8 +124,11 @@ module.exports = {
       .withMessage("Please enter price !!")
       .isNumeric()
       .withMessage("Invalid price !!")
-      .isLength({ min: 10000 })
-      .withMessage("Price minimum : 10000"),
+      .custom(async (value) => {
+        if (value < 10000) {
+          return Promise.reject("Price minimun: 10000");
+        }
+      }),
     body("image")
       .trim()
       .notEmpty()

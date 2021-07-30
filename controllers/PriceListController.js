@@ -17,8 +17,8 @@ exports.getAllPriceList = asyncMiddleware(async (req, res, next) => {
 
 exports.getListProductByIdShop = asyncMiddleware(async (req, res, next) => {
   const idShop = req.params.idShop;
-  const findResult = await PriceList.findAll({ where: { idShop: idShop } });
-  if (findResult == null) {
+  const findResult = await PriceList.findAll({ where: { ShopIdShop: idShop } });
+  if (findResult == null || findResult.length === 0) {
     return res.status(404).json(
       new ErrorResponse(404, {
         message: `Can't find any Product with Shop id : ${idShop}`,
@@ -50,7 +50,7 @@ exports.addNewPriceListObject = asyncMiddleware(async (req, res, next) => {
     ShopIdShop: data.idShop,
     ProductIdProduct: data.idProduct,
     price: data.price,
-    image: data.image,
+    image: Buffer.from(data.image),
   });
   return res.status(200).json(
     new SuccessResponse(200, {
@@ -84,7 +84,6 @@ exports.deletePriceListObject = asyncMiddleware(async (req, res, next) => {
   return res.status(200).json(
     new SuccessResponse(200, {
       message: "delete product in shop successfully !! ",
-      newObject: resultCreate.toJSON(),
     })
   );
 });
