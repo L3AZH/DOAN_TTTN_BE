@@ -2,7 +2,6 @@ const PriceListController = require("../controllers/PriceListController");
 const PriceListValidator = require("../validators/PriceListValidator");
 const AdminRole = require("../middlewares/checkrole/AdminRole");
 const jwtAuth = require("../middlewares/JwtAuth");
-const { route } = require("./ProductRoute");
 const router = require("express").Router();
 
 router.get(
@@ -10,6 +9,14 @@ router.get(
   jwtAuth,
   AdminRole,
   PriceListController.getAllPriceList
+);
+
+router.get(
+  "/get-shop-by-id-product",
+  jwtAuth,
+  PriceListValidator.getListShopByIdProduct,
+  PriceListValidator.result,
+  PriceListController.getListShopByIdProduct
 );
 
 router.get(

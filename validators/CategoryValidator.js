@@ -42,7 +42,7 @@ module.exports = {
             replacements: { idCategory: value },
           }
         );
-        if (!resultFind) {
+        if (!(resultFind.length === 0)) {
           return Promise.reject(
             "This category already exist in table Product !!!"
           );

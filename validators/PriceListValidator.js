@@ -19,6 +19,22 @@ module.exports = {
         }
       }),
   ],
+  getListShopByIdProduct: [
+    param("idProduct")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter id Product in path !!")
+      .custom(async (value) => {
+        const findResult = await Product.findByPk(value);
+        if (findResult == null) {
+          return Promise.reject(
+            new ErrorResponse(404, {
+              message: "IdProduct not exist in databse",
+            })
+          );
+        }
+      }),
+  ],
   addNewPriceListObjectValidation: [
     body("idShop")
       .trim()
@@ -130,21 +146,10 @@ module.exports = {
         }
       }),
     body("image")
-      .trim()
       .notEmpty()
       .withMessage("Please upload image of product !!")
       .isArray()
-      .withMessage("Invalid image data")
-      .custom(async (value) => {
-        for (let i = 0; i < value.lenght; i++) {
-          if (!(i === 0)) {
-            return Promise.reject("Invalida image data");
-          }
-          if (!(i === 1)) {
-            return Promise.reject("Invalida image data");
-          }
-        }
-      }),
+      .withMessage("Invalid image data"),
   ],
   result: (req, res, next) => {
     const errors = validationResult(req);

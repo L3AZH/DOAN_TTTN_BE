@@ -9,7 +9,6 @@ router.get("/get-all-product", jwtAuth, ProductController.getAllProduct);
 router.get(
   "/get-product-by-id-category/:idCategory",
   jwtAuth,
-  AdminRole,
   ProductValidator.getProductByCategoryIdValidation,
   ProductValidator.result,
   ProductController.getProductByCategoryId

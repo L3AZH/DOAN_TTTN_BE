@@ -31,6 +31,26 @@ exports.getListProductByIdShop = asyncMiddleware(async (req, res, next) => {
   }
 });
 
+exports.getListShopByIdProduct = asyncMiddleware(async (req, res, next) => {
+  const idProduct = req.params.idProduct;
+  const findResult = await PriceList.findAll({
+    where: { ProductIdProduct: idProduct },
+  });
+  if (findResult == null || findResult.length === 0) {
+    return res
+      .status(404)
+      .json(
+        new ErrorResponse(404, {
+          message: `Can't find any shop with Product id: ${idProduct}`,
+        })
+      );
+  } else {
+    return res
+      .status(200)
+      .json(new SuccessResponse(200, { result: findResult }));
+  }
+});
+
 exports.addNewPriceListObject = asyncMiddleware(async (req, res, next) => {
   const data = req.body;
   const findResult = await PriceList.findOne({
@@ -90,26 +110,28 @@ exports.deletePriceListObject = asyncMiddleware(async (req, res, next) => {
 
 exports.updatePriceListObject = asyncMiddleware(async (req, res, next) => {
   const idData = req.params;
-  const data = req.data;
+  const data = req.body;
   const findResult = await PriceList.findOne({
     where: {
-      ShopIdShop: data.idShop,
-      ProductIdProduct: data.idProduct,
+      ShopIdShop: idData.idShop,
+      ProductIdProduct: idData.idProduct,
     },
   });
+  console.log(idData);
   if (findResult == null) {
     return res.status(404).json(
       new ErrorResponse(404, {
-        message: `PriceListObejct with idshop: ${data.idShop} and idProduct: ${data.idProduct} not exist in database`,
+        message: `PriceListObejct with idshop: ${idData.idShop} and idProduct: ${idData.idProduct} not exist in database`,
       })
     );
   }
-  PriceList.update(
-    { price: data.price, image: data.image },
+  // phai doi update vi qua trinh nay kha lau UI se update cai cu vi update o server chua xong !!
+  await PriceList.update(
+    { price: data.price, image: Buffer.from(data.image) },
     {
       where: {
         ShopIdShop: idData.idShop,
-        ProductIdProduct: data.idProduct,
+        ProductIdProduct: idData.idProduct,
       },
     }
   );
