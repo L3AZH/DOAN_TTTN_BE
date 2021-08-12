@@ -46,6 +46,7 @@ exports.login = asyncMiddleware(async (req, res, next) => {
       return res.status(200).json(
         new SuccessResponse(200, {
           message: `Login successfully with email: ${checkExistEmail.email}`,
+          idAccount: checkExistEmail.idAccount,
           role: checkExistEmail.role,
           token: token,
           refreshToken: refreshToken,

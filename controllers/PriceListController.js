@@ -2,6 +2,8 @@ const { SuccessResponse } = require("../models/SuccessResponse");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const asyncMiddleware = require("../middlewares/AsyncMiddleware");
 const PriceList = require("../database/models/PriceList");
+const sequelize = require("../database/Db_connection");
+const { QueryTypes } = require("sequelize");
 
 exports.getAllPriceList = asyncMiddleware(async (req, res, next) => {
   const findResult = await PriceList.findAll();
@@ -33,17 +35,20 @@ exports.getListProductByIdShop = asyncMiddleware(async (req, res, next) => {
 
 exports.getListShopByIdProduct = asyncMiddleware(async (req, res, next) => {
   const idProduct = req.params.idProduct;
-  const findResult = await PriceList.findAll({
-    where: { ProductIdProduct: idProduct },
-  });
+  const findResult = await sequelize.query(
+    "select * , Product.name as nameProduct " +
+      "from PriceList,Product,Shop " +
+      "where PriceList.Product_idProduct = Product.idProduct and " +
+      "PriceList.Shop_idShop = Shop.idShop and " +
+      "PriceList.Product_idProduct = :idProductInput",
+    { type: QueryTypes.SELECT, replacements: { idProductInput: idProduct } }
+  );
   if (findResult == null || findResult.length === 0) {
-    return res
-      .status(404)
-      .json(
-        new ErrorResponse(404, {
-          message: `Can't find any shop with Product id: ${idProduct}`,
-        })
-      );
+    return res.status(404).json(
+      new ErrorResponse(404, {
+        message: `Can't find any shop with Product id: ${idProduct}`,
+      })
+    );
   } else {
     return res
       .status(200)

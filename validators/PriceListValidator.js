@@ -19,7 +19,7 @@ module.exports = {
         }
       }),
   ],
-  getListShopByIdProduct: [
+  getListShopByIdProductValidation: [
     param("idProduct")
       .trim()
       .notEmpty()

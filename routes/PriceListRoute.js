@@ -12,9 +12,9 @@ router.get(
 );
 
 router.get(
-  "/get-shop-by-id-product",
+  "/get-shop-by-id-product/:idProduct",
   jwtAuth,
-  PriceListValidator.getListShopByIdProduct,
+  PriceListValidator.getListShopByIdProductValidation,
   PriceListValidator.result,
   PriceListController.getListShopByIdProduct
 );
