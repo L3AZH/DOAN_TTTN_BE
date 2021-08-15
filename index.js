@@ -9,6 +9,8 @@ const CategoryRoute = require("./routes/CategoryRoute");
 const ProductRoute = require("./routes/ProductRoute");
 const ShopRoute = require("./routes/ShopRoute");
 const PriceListRoute = require("./routes/PriceListRoute");
+const BillRoute = require("./routes/BillRoute");
+const BillDetailRoute = require("./routes/BillDetailRoute");
 sequelize.sync();
 
 app.use(express.json({ limit: "50mb" }));
@@ -26,6 +28,8 @@ app.use("/api/category/", CategoryRoute);
 app.use("/api/product/", ProductRoute);
 app.use("/api/shop/", ShopRoute);
 app.use("/api/pricelist/", PriceListRoute);
+app.use("/api/bill/", BillRoute);
+app.use("/api/billdetail/", BillDetailRoute);
 app.use(errorHandler);
 // testConnection();
 app.listen(port, () => console.log(`Server is running on port ${port}`));

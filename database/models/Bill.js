@@ -15,6 +15,9 @@ Bill.init(
     date: {
       type: DataTypes.DATE,
     },
+    status: {
+      type: DataTypes.STRING(20),
+    },
     AccountIdAccount: {
       field: "Account_idAccount",
       type: DataTypes.UUID,

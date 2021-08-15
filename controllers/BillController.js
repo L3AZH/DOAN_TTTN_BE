@@ -39,14 +39,19 @@ exports.getBillByIdAccount = asyncMiddleware(async (req, res, next) => {
 exports.createBillByIdAccount = asyncMiddleware(async (req, res, next) => {
   const idAccount = req.params.idAccount;
   const data = req.body;
-  await Bill.create({
+  const newBill = await Bill.create({
     date: new Date(data.date),
     status: "Pending",
     AccountIdAccount: idAccount,
   });
   return res
     .status(200)
-    .json(new SuccessResponse(200, { message: "Create Bill successfully !!" }));
+    .json(
+      new SuccessResponse(200, {
+        message: "Create Bill successfully !!",
+        idBill: newBill.idBill,
+      })
+    );
 });
 
 exports.updateStatusBill = asyncMiddleware(async (req, res, next) => {

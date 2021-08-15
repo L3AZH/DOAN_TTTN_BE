@@ -47,12 +47,7 @@ module.exports = {
           );
         }
       }),
-    body("date")
-      .trim()
-      .notEmpty()
-      .withMessage("Please enter date in Bill !!")
-      .isDate()
-      .withMessage("Date invalid !!"),
+    body("date").trim().notEmpty().withMessage("Please enter date in Bill !!"),
   ],
   updateStatusBillValidation: [
     param("idBill")
