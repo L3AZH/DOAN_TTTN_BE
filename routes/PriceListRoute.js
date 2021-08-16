@@ -28,6 +28,14 @@ router.get(
   PriceListController.getListProductByIdShop
 );
 
+router.get(
+  "/get-list-price-list-by-name-product/:nameProduct",
+  jwtAuth,
+  PriceListValidator.getListPriceListByNameProductValidation,
+  PriceListValidator.result,
+  PriceListController.getListPriceListByNameProduct
+);
+
 router.post(
   "/create-new-price-list-object",
   jwtAuth,

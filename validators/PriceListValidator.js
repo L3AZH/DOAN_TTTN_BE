@@ -35,6 +35,12 @@ module.exports = {
         }
       }),
   ],
+  getListPriceListByNameProductValidation: [
+    param("nameProduct")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter name product to find !!"),
+  ],
   addNewPriceListObjectValidation: [
     body("idShop")
       .trim()

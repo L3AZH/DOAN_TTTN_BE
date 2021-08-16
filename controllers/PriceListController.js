@@ -2,6 +2,7 @@ const { SuccessResponse } = require("../models/SuccessResponse");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const asyncMiddleware = require("../middlewares/AsyncMiddleware");
 const PriceList = require("../database/models/PriceList");
+const BillDetail = require("../database/models/BillDetail");
 const sequelize = require("../database/Db_connection");
 const { QueryTypes } = require("sequelize");
 
@@ -56,6 +57,31 @@ exports.getListShopByIdProduct = asyncMiddleware(async (req, res, next) => {
   }
 });
 
+exports.getListPriceListByNameProduct = asyncMiddleware(
+  async (req, res, next) => {
+    const nameProduct = req.params.nameProduct;
+    const findResult = await sequelize.query(
+      "select * , Product.name as nameProduct " +
+        "from PriceList,Product,Shop " +
+        "where PriceList.Product_idProduct = Product.idProduct and " +
+        "PriceList.Shop_idShop = Shop.idShop and " +
+        "Product.name = :nameProduct",
+      { type: QueryTypes.SELECT, replacements: { nameProduct: nameProduct } }
+    );
+    if (findResult == null || findResult.length === 0) {
+      return res.status(404).json(
+        new ErrorResponse(404, {
+          message: `Cant find any product with name :${nameProduct}`,
+        })
+      );
+    } else {
+      return res
+        .status(200)
+        .json(new SuccessResponse(200, { result: findResult }));
+    }
+  }
+);
+
 exports.addNewPriceListObject = asyncMiddleware(async (req, res, next) => {
   const data = req.body;
   const findResult = await PriceList.findOne({
@@ -97,6 +123,22 @@ exports.deletePriceListObject = asyncMiddleware(async (req, res, next) => {
     return res.status(404).json(
       new ErrorResponse(404, {
         message: `PriceListObejct with idshop: ${data.idShop} and idProduct: ${data.idProduct} not exist in database`,
+      })
+    );
+  }
+  const checkExistInDetailBill = await BillDetail.findAll({
+    where: {
+      PriceListShopIdShop: data.idShop,
+      PriceListProductIdProduct: data.idProduct,
+    },
+  });
+  if (
+    checkExistInDetailBill != null ||
+    !(checkExistInDetailBill.length === 0)
+  ) {
+    return res.status(400).json(
+      new ErrorResponse(400, {
+        message: `PriceListObejct with idshop: ${data.idShop} and idProduct: ${data.idProduct} exist in detail bill`,
       })
     );
   }
