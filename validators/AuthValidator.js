@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body, param, validationResult } = require("express-validator");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const Account = require("../database/models/Account");
 const RefreshToken = require("../database/models/RefreshToken");
@@ -24,7 +24,12 @@ module.exports = {
     body("password")
       .trim()
       .notEmpty()
-      .withMessage("Please enter your password"),
+      .withMessage("Please enter your password")
+      .custom(async (value) => {
+        if (value.length < 5) {
+          return Promise.reject("password must be at least 5 character");
+        }
+      }),
     body("role")
       .trim()
       .notEmpty()
@@ -62,6 +67,32 @@ module.exports = {
           return Promise.reject(
             new ErrorResponse(401, { message: "Invalid token !!" })
           );
+        }
+      }),
+  ],
+  changePasswordValidation: [
+    param("idAccount")
+      .notEmpty()
+      .withMessage("Please enter idAccount !!")
+      .custom(async (value) => {
+        const checkExist = await Account.findByPk(value);
+        if (checkExist == null) {
+          return Promise.reject(
+            new ErrorResponse(404, {
+              message: `Can't find any Account with idAccount: ${value}`,
+            })
+          );
+        }
+      }),
+    body("oldPassword")
+      .notEmpty()
+      .withMessage("Please enter your old password !!"),
+    body("newPassword")
+      .notEmpty()
+      .withMessage("Please enter new password")
+      .custom(async (value) => {
+        if (value.length < 5) {
+          return Promise.reject("password must be at least 5 character");
         }
       }),
   ],

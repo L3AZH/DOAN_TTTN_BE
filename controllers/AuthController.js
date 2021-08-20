@@ -93,3 +93,28 @@ exports.refreshToken = asyncMiddleware(async (req, res, next) => {
 exports.checkTokenExpire = asyncMiddleware(async (req, res, next) => {
   return res.status(200).json(new SuccessResponse(200, {}));
 });
+
+exports.changePassword = asyncMiddleware(async (req, res, next) => {
+  const idAccount = req.params.idAccount;
+  const data = req.body;
+  const account = await Account.findOne({ where: { idAccount: idAccount } });
+  const checkPasswordValid = await bcrypt.compare(
+    data.oldPassword,
+    account.password
+  );
+  if (checkPasswordValid) {
+    await Account.update(
+      { password: await hashPassword(data.newPassword) },
+      { where: { idAccount: account.idAccount } }
+    );
+    return res
+      .status(200)
+      .json(
+        new SuccessResponse(200, { message: "Update password successfully !!" })
+      );
+  } else {
+    return res
+      .status(400)
+      .json(new ErrorResponse(400, { message: "Wrong password !!!" }));
+  }
+});

@@ -30,4 +30,12 @@ router.post(
 
 router.get("/check-token-expire", jwtAuth, AuthController.checkTokenExpire);
 
+router.put(
+  "/change-password/:idAccount",
+  jwtAuth,
+  AuthValidator.changePasswordValidation,
+  AuthValidator.result,
+  AuthController.changePassword
+);
+
 module.exports = router;

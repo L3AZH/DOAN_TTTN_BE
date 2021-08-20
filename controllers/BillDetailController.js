@@ -65,17 +65,17 @@ exports.createNewBillDetail = asyncMiddleware(async (req, res, next) => {
 exports.createNewListBillDetail = asyncMiddleware(async (req, res, next) => {
   const listData = req.body.listData;
   for (let index = 0; index < listData.length; index++) {
-    const findResult = await PriceList.findOne({
+    const findResult = await PriceList.findAll({
       ShopIdShop: listData[index].idShop,
       ProductIdProduct: listData[index].idProduct,
     });
-    if (findResult == null) {
+    if (findResult == null || findResult.length === 0) {
       return res.status(404).json(
         new ErrorResponse(404, {
           message:
             `Can't find any PriceList ` +
             `with idProduct: ${listData[index].idProduct} ` +
-            `and idShop: ${listDatap[index].idShop}`,
+            `and idShop: ${listData[index].idShop}`,
         })
       );
     }
