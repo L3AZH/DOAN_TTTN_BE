@@ -1,8 +1,7 @@
 const { body, validationResult, param } = require("express-validator");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const Shop = require("../database/models/Shop");
-const PriceList = require("../database/models/PriceList");
-
+const DetailShopProduct = require("../database/models/DetailShopProduct");
 module.exports = {
   createNewShopValidation: [
     body("name")
@@ -33,7 +32,7 @@ module.exports = {
       .notEmpty()
       .withMessage("Please enter idShop in path api !!")
       .custom(async (value) => {
-        const findResult = await PriceList.findOne({
+        const findResult = await DetailShopProduct.findOne({
           where: { ShopIdShop: value },
         });
         if (findResult != null) {

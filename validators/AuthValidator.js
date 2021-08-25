@@ -41,6 +41,13 @@ module.exports = {
           }
         }
       }),
+    body("address").trim().notEmpty().withMessage("Please enter your address"),
+    body("phone")
+      .trim()
+      .isNumeric()
+      .withMessage("Phone numeber invalid")
+      .isLength({ min: 10, max: 10 })
+      .withMessage("Phone number must be 10 digit"),
   ],
   loginRequestDataValidation: [
     body("email")

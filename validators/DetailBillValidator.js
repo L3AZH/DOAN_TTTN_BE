@@ -62,17 +62,6 @@ module.exports = {
           );
         }
       }),
-    body("price")
-      .trim()
-      .notEmpty()
-      .withMessage("Please enter price !!")
-      .isNumeric()
-      .withMessage("Invalid price !!")
-      .custom(async (value) => {
-        if (value < 10000) {
-          return Promise.reject("Price minimun: 10000");
-        }
-      }),
     body("amount")
       .trim()
       .notEmpty()
@@ -121,16 +110,6 @@ module.exports = {
               message: "IdProduct not exist in database",
             })
           );
-        }
-      }),
-    body("listData.*.price")
-      .notEmpty()
-      .withMessage("Please enter price !!")
-      .isNumeric()
-      .withMessage("Invalid price !!")
-      .custom(async (value) => {
-        if (value < 10000) {
-          return Promise.reject("Price minimun: 10000");
         }
       }),
     body("listData.*.amount")

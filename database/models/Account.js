@@ -32,6 +32,12 @@ Account.init(
     role: {
       type: DataTypes.STRING(10),
     },
+    address: {
+      type: DataTypes.STRING(250),
+    },
+    phone: {
+      type: DataTypes.STRING(10),
+    },
   },
   {
     sequelize,

@@ -18,6 +18,8 @@ exports.register = asyncMiddleware(async (req, res, next) => {
     email: data.email,
     password: await hashPassword(data.password),
     role: data.role,
+    address: data.address,
+    phone: data.phone,
   });
   return res.status(200).json(
     new SuccessResponse(200, {

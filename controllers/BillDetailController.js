@@ -2,20 +2,20 @@ const { SuccessResponse } = require("../models/SuccessResponse");
 const { ErrorResponse } = require("../models/ErrorResponse");
 const asyncMiddleware = require("../middlewares/AsyncMiddleware");
 const BillDetail = require("../database/models/BillDetail");
-const PriceList = require("../database/models/PriceList");
+const DetailShopProduct = require("../database/models/DetailShopProduct");
 const sequelize = require("../database/Db_connection");
 const { QueryTypes } = require("sequelize");
 
 exports.getAllBillDetailByIdBill = asyncMiddleware(async (req, res, next) => {
   const idBill = req.params.idBill;
   const findResult = await sequelize.query(
-    "select Bill_idBill, PriceList_Shop_idShop, PriceList_Product_idProduct, " +
-      "BillDetail.price as PriceDetail, PriceList.price as PriceOrigin ,BillDetail.amount,  " +
-      "Product.name as nameProduct, Shop.name as nameShop, PriceList.image " +
-      "from BillDetail, PriceList, Product, Shop " +
-      "where BillDetail.PriceList_Shop_idShop = PriceList.Shop_idShop and " +
-      "BillDetail.PriceList_Product_idProduct = PriceList.Product_idProduct and " +
-      "PriceList.Shop_idShop = Shop.idShop and PriceList.Product_idProduct = Product.idProduct and " +
+    "select Bill_idBill, DetailShopProduct_Shop_idShop, DetailShopProduct_Product_idProduct, " +
+      "DetailShopProduct.price as PriceOrigin ,BillDetail.amount,  " +
+      "Product.name as nameProduct, Shop.name as nameShop, DetailShopProduct.image " +
+      "from BillDetail, DetailShopProduct, Product, Shop " +
+      "where BillDetail.DetailShopProduct_Shop_idShop = DetailShopProduct.Shop_idShop and " +
+      "BillDetail.DetailShopProduct_Product_idProduct = DetailShopProduct.Product_idProduct and " +
+      "DetailShopProduct.Shop_idShop = Shop.idShop and DetailShopProduct.Product_idProduct = Product.idProduct and " +
       "BillDetail.Bill_idBill = :idBillInput",
     { type: QueryTypes.SELECT, replacements: { idBillInput: idBill } }
   );
@@ -36,12 +36,11 @@ exports.createNewBillDetail = asyncMiddleware(async (req, res, next) => {
   const data = req.body;
   await BillDetail.create({
     BillIdBill: data.idBill,
-    PriceListShopIdShop: data.idShop,
-    PriceListProductIdProduct: data.idProduct,
-    price: data.price,
+    DetailShopProductShopIdShop: data.idShop,
+    DetailShopProductProductIdProduct: data.idProduct,
     amount: data.amount,
   });
-  const findResult = await PriceList.findOne({
+  const findResult = await DetailShopProduct.findOne({
     where: {
       ShopIdShop: data.idShop,
       ProductIdProduct: data.idProduct,
@@ -50,13 +49,14 @@ exports.createNewBillDetail = asyncMiddleware(async (req, res, next) => {
   if (findResult == null) {
     return res.status(404).json(
       new ErrorResponse(404, {
-        message: "This Product by This Shop not exist in PriceList database !!",
+        message:
+          "This Product by This Shop not exist in DetailShopProduct database !!",
       })
     );
   } else {
     return res.status(200).json(
       new SuccessResponse(200, {
-        message: "Create Bill detail successfully !!",
+        message: "Create Bill detail successfully!!",
       })
     );
   }
@@ -65,7 +65,7 @@ exports.createNewBillDetail = asyncMiddleware(async (req, res, next) => {
 exports.createNewListBillDetail = asyncMiddleware(async (req, res, next) => {
   const listData = req.body.listData;
   for (let index = 0; index < listData.length; index++) {
-    const findResult = await PriceList.findAll({
+    const findResult = await DetailShopProduct.findAll({
       ShopIdShop: listData[index].idShop,
       ProductIdProduct: listData[index].idProduct,
     });
@@ -73,7 +73,7 @@ exports.createNewListBillDetail = asyncMiddleware(async (req, res, next) => {
       return res.status(404).json(
         new ErrorResponse(404, {
           message:
-            `Can't find any PriceList ` +
+            `Can't find any DetailShopProduct ` +
             `with idProduct: ${listData[index].idProduct} ` +
             `and idShop: ${listData[index].idShop}`,
         })
@@ -81,9 +81,8 @@ exports.createNewListBillDetail = asyncMiddleware(async (req, res, next) => {
     }
     await BillDetail.create({
       BillIdBill: listData[index].idBill,
-      PriceListShopIdShop: listData[index].idShop,
-      PriceListProductIdProduct: listData[index].idProduct,
-      price: listData[index].price,
+      DetailShopProductShopIdShop: listData[index].idShop,
+      DetailShopProductProductIdProduct: listData[index].idProduct,
       amount: listData[index].amount,
     });
   }

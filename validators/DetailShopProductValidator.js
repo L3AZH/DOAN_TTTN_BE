@@ -1,6 +1,6 @@
 const { body, validationResult, param, query } = require("express-validator");
 const { ErrorResponse } = require("../models/ErrorResponse");
-const PriceList = require("../database/models/PriceList");
+const DetailShopProduct = require("../database/models/DetailShopProduct");
 const Shop = require("../database/models/Shop");
 const Product = require("../database/models/Product");
 
@@ -35,13 +35,13 @@ module.exports = {
         }
       }),
   ],
-  getListPriceListByNameProductValidation: [
+  getListDetailShopProductByNameProductValidation: [
     param("nameProduct")
       .trim()
       .notEmpty()
       .withMessage("Please enter name product to find !!"),
   ],
-  addNewPriceListObjectValidation: [
+  addNewDetailShopProductObjectValidation: [
     body("idShop")
       .trim()
       .notEmpty()
@@ -78,6 +78,9 @@ module.exports = {
         if (value < 10000) {
           return Promise.reject("Price minimun: 10000");
         }
+        if (value > 10000000000) {
+          return Promise.reject("Price maximum: 10000000000");
+        }
       }),
     body("image")
       .notEmpty()
@@ -85,7 +88,7 @@ module.exports = {
       .isArray()
       .withMessage("Invalid array !!"),
   ],
-  deletePriceListObjectValidation: [
+  deleteDetailShopProductObjectValidation: [
     param("idShop")
       .trim()
       .notEmpty()
@@ -113,7 +116,7 @@ module.exports = {
         }
       }),
   ],
-  updatePriceListObjectValidation: [
+  updateDetailShopProductObjectValidation: [
     param("idShop")
       .trim()
       .notEmpty()
@@ -149,6 +152,9 @@ module.exports = {
       .custom(async (value) => {
         if (value < 10000) {
           return Promise.reject("Price minimun: 10000");
+        }
+        if (value > 10000000000) {
+          return Promise.reject("Price maximum: 10000000000");
         }
       }),
     body("image")

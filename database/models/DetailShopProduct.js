@@ -3,9 +3,9 @@ const { DataTypes, Model, UUID } = require("sequelize");
 const Shop = require("./Shop");
 const Product = require("./Product");
 
-class PriceList extends Model {}
+class DetailShopProduct extends Model {}
 
-PriceList.init(
+DetailShopProduct.init(
   {
     ShopIdShop: {
       field: "Shop_idShop",
@@ -33,12 +33,12 @@ PriceList.init(
   {
     sequelize,
     timestamps: false,
-    tableName: "PriceList",
-    modelName: "PriceList",
+    tableName: "DetailShopProduct",
+    modelName: "DetailShopProduct",
   }
 );
 
-Product.belongsToMany(Shop, { through: "PriceList" });
-Shop.belongsToMany(Product, { through: "PriceList" });
+Product.belongsToMany(Shop, { through: "DetailShopProduct" });
+Shop.belongsToMany(Product, { through: "DetailShopProduct" });
 
-module.exports = PriceList;
+module.exports = DetailShopProduct;

@@ -3,7 +3,7 @@ const { ErrorResponse } = require("../models/ErrorResponse");
 const Product = require("../database/models/Product");
 const Category = require("../database/models/Category");
 const BillDetail = require("../database/models/BillDetail");
-const PriceList = require("../database/models/PriceList");
+const DetailShopProduct = require("../database/models/DetailShopProduct");
 
 module.exports = {
   getProductByCategoryIdValidation: [
@@ -62,12 +62,12 @@ module.exports = {
         }
       })
       .custom(async (value) => {
-        const findResult = await PriceList.findOne({
+        const findResult = await DetailShopProduct.findOne({
           where: { ProductIdProduct: value },
         });
         if (findResult != null) {
           return Promise.reject(
-            `Product already exist in PriceList, can not delete !!`
+            `Product already exist in DetailShopProduct, can not delete !!`
           );
         }
       }),
