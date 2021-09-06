@@ -27,6 +27,8 @@ module.exports = {
       .trim()
       .notEmpty()
       .withMessage("Please enter name product !!")
+      .isLength({ max: 50 })
+      .withMessage("Product name must be maximun 50 character!!")
       .custom(async (value) => {
         const findResult = await Product.findOne({ where: { name: value } });
         if (findResult != null) {
@@ -89,6 +91,8 @@ module.exports = {
       .trim()
       .notEmpty()
       .withMessage("Please enter name product !!")
+      .isLength({ max: 50 })
+      .withMessage("Product name must be maximun 50 character!!")
       .custom(async (value) => {
         const findResult = await Product.findOne({ where: { name: value } });
         if (findResult != null) {

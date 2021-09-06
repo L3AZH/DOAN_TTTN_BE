@@ -10,6 +10,8 @@ module.exports = {
       .trim()
       .notEmpty()
       .withMessage("Please enter name of category !!")
+      .isLength({ max: 50 })
+      .withMessage("Category name must be maximun 50 character!!")
       .custom(async (value) => {
         const resultFind = await Category.findOne({ where: { name: value } });
         if (resultFind != null) {
@@ -66,6 +68,8 @@ module.exports = {
       .trim()
       .notEmpty()
       .withMessage("Please enter category's name !!")
+      .isLength({ max: 50 })
+      .withMessage("Category name must be maximun 50 character!!")
       .custom(async (value) => {
         const resultFind = await Category.findOne({ where: { name: value } });
         if (resultFind != null) {

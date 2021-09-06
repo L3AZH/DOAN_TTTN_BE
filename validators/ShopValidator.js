@@ -8,6 +8,8 @@ module.exports = {
       .trim()
       .notEmpty()
       .withMessage("Pleaser enter shop name !!")
+      .isLength({ max: 50 })
+      .withMessage("Name Shop must be maximun 50 character !!")
       .custom(async (value) => {
         const findResult = await Shop.findOne({ where: { name: value } });
         if (findResult != null) {
@@ -16,7 +18,12 @@ module.exports = {
           );
         }
       }),
-    body("address").trim().notEmpty().withMessage("Please enter address"),
+    body("address")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter address")
+      .isLength({ max: 100 })
+      .withMessage("Address Shop must be maximun 100 character !!"),
     body("phone")
       .trim()
       .notEmpty()
@@ -71,6 +78,8 @@ module.exports = {
       .trim()
       .notEmpty()
       .withMessage("Pleaser enter shop name !!")
+      .isLength({ max: 50 })
+      .withMessage("Name Shop must be maximun 50 character !!")
       .custom(async (value) => {
         const findResult = await Shop.findOne({ where: { name: value } });
         if (findResult != null) {
@@ -79,7 +88,12 @@ module.exports = {
           );
         }
       }),
-    body("address").trim().notEmpty().withMessage("Please enter address"),
+    body("address")
+      .trim()
+      .notEmpty()
+      .withMessage("Please enter address")
+      .isLength({ max: 100 })
+      .withMessage("Address Shop must be maximun 100 character !!"),
     body("phone")
       .trim()
       .notEmpty()

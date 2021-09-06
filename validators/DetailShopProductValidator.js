@@ -78,8 +78,8 @@ module.exports = {
         if (value < 10000) {
           return Promise.reject("Price minimun: 10000");
         }
-        if (value > 10000000000) {
-          return Promise.reject("Price maximum: 10000000000");
+        if (value > 100000000) {
+          return Promise.reject("Price maximum: 100000000");
         }
       }),
     body("image")
