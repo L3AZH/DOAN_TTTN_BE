@@ -48,6 +48,18 @@ exports.deleteShop = asyncMiddleware(async (req, res, next) => {
 exports.updateShop = asyncMiddleware(async (req, res, next) => {
   const idShop = req.params.idShop;
   const data = req.body;
+  const findNameShopExist = await Shop.findOne({ where: { name: data.name } });
+  if (findNameShopExist != null) {
+    if (!(findNameShopExist.idShop === idShop)) {
+      return res
+        .status(400)
+        .json(
+          new ErrorResponse(400, {
+            message: "Shop with this name exist in database",
+          })
+        );
+    }
+  }
   const resultUpdate = await Shop.update(
     {
       name: data.name,

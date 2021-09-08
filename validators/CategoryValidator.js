@@ -69,15 +69,15 @@ module.exports = {
       .notEmpty()
       .withMessage("Please enter category's name !!")
       .isLength({ max: 50 })
-      .withMessage("Category name must be maximun 50 character!!")
-      .custom(async (value) => {
-        const resultFind = await Category.findOne({ where: { name: value } });
-        if (resultFind != null) {
-          return Promise.reject(
-            "Category with this name already exist in database !!"
-          );
-        }
-      }),
+      .withMessage("Category name must be maximun 50 character!!"),
+    // .custom(async (value) => {
+    //   const resultFind = await Category.findOne({ where: { name: value } });
+    //   if (resultFind != null) {
+    //     return Promise.reject(
+    //       "Category with this name already exist in database !!"
+    //     );
+    //   }
+    // }),
   ],
   result: (req, res, next) => {
     const errors = validationResult(req);

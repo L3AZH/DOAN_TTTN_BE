@@ -44,6 +44,16 @@ exports.deleteCategory = asyncMiddleware(async (req, res, next) => {
 exports.updateCategory = asyncMiddleware(async (req, res, next) => {
   const newName = req.body.name;
   const idCategory = req.params.idCategory;
+  const findNameExist = await Category.findOne({ where: { name: newName } });
+  if (findNameExist != null) {
+    if (!(findNameExist.idCategory === idCategory)) {
+      return res.status(400).json(
+        new ErrorResponse(400, {
+          message: "Category with this name exist in database",
+        })
+      );
+    }
+  }
   const resultUpdate = await Category.update(
     { name: newName },
     { where: { idCategory: idCategory } }

@@ -68,6 +68,20 @@ exports.deleteProduct = asyncMiddleware(async (req, res, next) => {
 exports.updateProduct = asyncMiddleware(async (req, res, next) => {
   const idProduct = req.params.idProduct;
   const data = req.body;
+  const findNameProductExist = await Product.findOne({
+    where: { name: data.name },
+  });
+  if (findNameProductExist != null) {
+    if (!(findNameProductExist.idProduct === idProduct)) {
+      return res
+        .status(400)
+        .json(
+          new ErrorResponse(400, {
+            message: "Product with this name exist in database",
+          })
+        );
+    }
+  }
   const updateResult = await Product.update(
     {
       name: data.name,

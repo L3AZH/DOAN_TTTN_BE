@@ -79,15 +79,15 @@ module.exports = {
       .notEmpty()
       .withMessage("Pleaser enter shop name !!")
       .isLength({ max: 50 })
-      .withMessage("Name Shop must be maximun 50 character !!")
-      .custom(async (value) => {
-        const findResult = await Shop.findOne({ where: { name: value } });
-        if (findResult != null) {
-          return Promise.reject(
-            `Shop with ${value} name already exist in database`
-          );
-        }
-      }),
+      .withMessage("Name Shop must be maximun 50 character !!"),
+    // .custom(async (value) => {
+    //   const findResult = await Shop.findOne({ where: { name: value } });
+    //   if (findResult != null) {
+    //     return Promise.reject(
+    //       `Shop with ${value} name already exist in database`
+    //     );
+    //   }
+    // }),
     body("address")
       .trim()
       .notEmpty()

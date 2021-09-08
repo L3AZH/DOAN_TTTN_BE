@@ -92,15 +92,15 @@ module.exports = {
       .notEmpty()
       .withMessage("Please enter name product !!")
       .isLength({ max: 50 })
-      .withMessage("Product name must be maximun 50 character!!")
-      .custom(async (value) => {
-        const findResult = await Product.findOne({ where: { name: value } });
-        if (findResult != null) {
-          return Promise.reject(
-            `Product with name: ${value} exist in database !!`
-          );
-        }
-      }),
+      .withMessage("Product name must be maximun 50 character!!"),
+    // .custom(async (value) => {
+    //   const findResult = await Product.findOne({ where: { name: value } });
+    //   if (findResult != null) {
+    //     return Promise.reject(
+    //       `Product with name: ${value} exist in database !!`
+    //     );
+    //   }
+    // }),
     body("idCategory")
       .trim()
       .notEmpty()
